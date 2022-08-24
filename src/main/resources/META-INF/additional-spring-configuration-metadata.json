@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "spring.engine-io.server-port",
+      "type": "java.lang.Integer",
+      "description": "服务监听端口.不填则服务不会启动"
+    }
+  ]
+}

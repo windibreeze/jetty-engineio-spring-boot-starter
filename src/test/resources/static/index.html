@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="engine.io.min.js"></script>
+    <script>
+        let url = 'http://localhost:9090';
+        let socket;
+
+        function start() {
+            if (undefined !== socket && null != socket) {
+                return
+            }
+
+            socket = eio(url)
+
+            socket.on('error', e => {
+                console.log('error', e);
+            });
+
+            socket.on('open', () => {
+                console.log('open')
+            });
+
+            socket.on('message', (data) => {
+                console.log(data)
+                document.getElementById('receive').innerHTML += data + '<br>';
+            });
+
+            socket.on('close', () => {
+                console.log('close')
+            });
+
+        }
+
+        function send() {
+            if (undefined === socket || null === socket) {
+                return
+            }
+
+            var text = document.getElementById('sendText').value;
+            socket.sendPacket("message", text);
+            document.getElementById('send').innerHTML += text + '<br>';
+            document.getElementById('sendText').value = '';
+        }
+    </script>
+</head>
+<body>
+<div>
+    <input id="start" type="button" value="开始" onclick="start()">
+    <div>
+        <div id="send" class="text"><p>send</p></div>
+        <input id="sendText" type="text" placeholder="请输入要发送的内容"/>
+        <input type="button" value="发送" onclick="send()"/>
+    </div>
+    <div>
+        <div id="receive" class="text"><p>receive</p></div>
+    </div>
+</div>
+</body>
+</html>
