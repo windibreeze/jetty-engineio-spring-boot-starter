@@ -33,7 +33,7 @@ import io.github.windibreeze.org.springframework.engineio.annotation.OnClose;
 import io.github.windibreeze.org.springframework.engineio.annotation.OnConnection;
 import io.github.windibreeze.org.springframework.engineio.annotation.OnMessage;
 import io.github.windibreeze.org.springframework.engineio.annotation.OnOpen;
-import io.github.windibreeze.org.springframework.engineio.utils.EngineIoSender;
+import io.github.windibreeze.org.springframework.engineio.service.EngineIoService;
 import io.socket.engineio.server.EngineIoSocket;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class SocketHandle {
 
     // 注入消息发送者，使用EngineIoSocket的id即可向对应的通道发送消息
     @Autowired
-    private EngineIoSender sender;
+    private EngineIoService engineIoService;
 
     // 自己业务缓存的socket列表
     private List<String> ids = new ArrayList<>();
@@ -72,7 +72,7 @@ public class SocketHandle {
         log.info("message {}:{}", socket.getId(), message);
         // 示例业务，收到send则向所有客户端发送一条消息
         if ("send".equals(message)) {
-            ids.forEach(id -> sender.send(id, "hello world"));
+            ids.forEach(id -> engineIoService.send(id, "hello world"));
         }
     }
 

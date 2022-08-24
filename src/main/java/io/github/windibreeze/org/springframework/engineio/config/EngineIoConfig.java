@@ -6,7 +6,7 @@ import io.github.windibreeze.org.springframework.engineio.annotation.OnMessage;
 import io.github.windibreeze.org.springframework.engineio.annotation.OnOpen;
 import io.github.windibreeze.org.springframework.engineio.processor.EndpointProcessor;
 import io.github.windibreeze.org.springframework.engineio.processor.EngineIoAnnotationProcessor;
-import io.github.windibreeze.org.springframework.engineio.utils.EngineIoSender;
+import io.github.windibreeze.org.springframework.engineio.service.EngineIoService;
 import io.socket.engineio.server.EngineIoServer;
 import io.socket.engineio.server.EngineIoSocket;
 import org.slf4j.Logger;
@@ -60,8 +60,8 @@ public class EngineIoConfig {
     }
 
     @Bean
-    public EngineIoSender engineIoSender() {
-        return new EngineIoSender(socketMap);
+    public EngineIoService engineIoSender() {
+        return new EngineIoService(socketMap);
     }
 
 }
