@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * 建立连接时的回调,参数为EngineIoSocket<br/>
+ * <p>建立连接时的回调,参数为EngineIoSocket</p>
  * 接口示例见
  *
  * @see io.github.windibreeze.org.springframework.engineio.example.EngineIoListener#onConnection(EngineIoSocket)

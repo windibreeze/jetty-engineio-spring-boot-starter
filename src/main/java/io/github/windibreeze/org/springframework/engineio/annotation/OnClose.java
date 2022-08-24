@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 客户端打开链接时回调,参数为EngineIoSocket,reason,description<br/>
+ * <p>客户端打开链接时回调,参数为EngineIoSocket,reason,description</p>
  * 接口示例见
  *
  * @see io.github.windibreeze.org.springframework.engineio.example.EngineIoListener#onClose(EngineIoSocket, String, String)

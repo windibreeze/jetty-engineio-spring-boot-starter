@@ -15,7 +15,7 @@
     <groupId>io.github.windibreeze</groupId>
     <version>1.0-SNAPSHOT</version>
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>The project is JettyEngintIO Spring Boot Starter</description>
+    <description>The project is Jetty-Engine.IO Spring Boot Starter</description>
     <url>https://github.com/windibreeze/${project.artifactId}</url>
     <packaging>jar</packaging>
 
@@ -31,18 +31,15 @@
         <developer>
             <id>breeze</id>
             <name>breeze</name>
-            <email>466473810@qq.com</email>
-            <roles>
-                <role>developer</role>
-            </roles>
+            <email>breezewindi0419@gmail.com</email>
             <timezone>+8</timezone>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/windibreeze/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/windibreeze/${project.artifactId}.git</developerConnection>
         <url>https://github.com/windibreeze/${project.artifactId}</url>
+        <connection>https://github.com/windibreeze/${project.artifactId}.git</connection>
+        <developerConnection>https://github.com/windibreeze/${project.artifactId}</developerConnection>
     </scm>
 
     <issueManagement>
@@ -59,11 +56,16 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
-        <sign-maven-plugin.version>0.3.1</sign-maven-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <maven-scm-plugin.version>1.8.1</maven-scm-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
+        <sign-maven-plugin.version>0.3.1</sign-maven-plugin.version>
         <license-maven-plugin.version>4.1</license-maven-plugin.version>
 
         <!-- project dependency package version -->
@@ -71,14 +73,6 @@
         <engine-io.version>6.2.1</engine-io.version>
         <slf4j.version>1.7.30</slf4j.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>aliyun-maven</id>
-            <name>Aliyun Maven Public Repository</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -234,12 +228,12 @@
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <name>OSS Snapshots Repositories</name>
+            <name>oss Snapshots Repository</name>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <name>OSS Staging Repositories</name>
+            <name>oss Staging Repository</name>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
@@ -286,6 +280,18 @@
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven-compiler-plugin.version}</version>
+                        <configuration>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
+                            <showWarnings>true</showWarnings>
+                        </configuration>
+                    </plugin>
+
+                    <!-- java doc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>${maven-javadoc-plugin.version}</version>
                         <configuration>
@@ -294,9 +300,11 @@
                             <docencoding>${project.build.sourceEncoding}</docencoding>
                             <source>${javadoc.version}</source>
                             <level>public</level>
-                            <!-- 关闭doclint检查，避免注解检查不通过 -->
-                            <doclint>none</doclint>
                             <quiet>true</quiet>
+                            <!-- 禁用doclint，不严格检查 -->
+                            <!-- <additionalJOption>-Xdoclint:none</additionalJOption> -->
+                            <!-- 文档解析出错时仍然继续 -->
+                            <!-- <failOnError>false</failOnError> -->
                         </configuration>
                         <executions>
                             <execution>
@@ -307,6 +315,28 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+
+                    <!-- gpg认证 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-scm-plugin</artifactId>
+                        <version>${maven-scm-plugin.version}</version>
                     </plugin>
 
                     <plugin>
@@ -333,10 +363,6 @@
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                            <!-- <sslAllowAll>true</sslAllowAll> -->
-                            <stagingProgressPauseDurationSeconds>60</stagingProgressPauseDurationSeconds>
-                            <stagingProgressTimeoutMinutes>20</stagingProgressTimeoutMinutes>
-                            <detectBuildFailures>true</detectBuildFailures>
                         </configuration>
                     </plugin>
                 </plugins>
