@@ -12,7 +12,7 @@
     <dependency>
         <artifactId>jetty-engineio-spring-boot-starter</artifactId>
         <groupId>io.github.windibreeze</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </dependency>
 </dependencies>
 ```
@@ -87,3 +87,7 @@ public class SocketHandle {
 
 ### 客户端示例代码
 见 [src/test/resources/static/index.html](src/test/resources/static/index.html)
+
+
+### 参考资料
+[Engine.io Java文档](https://socketio.github.io/engine.io-server-java/javadocs/index.html)
